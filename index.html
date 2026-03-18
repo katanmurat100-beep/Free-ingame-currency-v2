@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prank Time!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        #button-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .prank-button {
+            padding: 20px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .prank-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .prank-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Per-button themes */
+        .prank-button.vbucks {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            box-shadow: 0 10px 30px rgba(59,130,246,0.25);
+        }
+        .prank-button.robux {
+            background: linear-gradient(135deg, #ff7a00 0%, #ff4d00 100%);
+            box-shadow: 0 10px 30px rgba(255,122,0,0.25);
+        }
+        /* Fortnite Theme */
+        .prank-button.vbucks {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            box-shadow: 0 10px 30px rgba(59,130,246,0.35), 0 0 20px rgba(96,165,250,0.2);
+            border: 2px solid #1e3a8a;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            font-weight: 900;
+        }
+        
+        /* Minecraft Theme */
+        .prank-button.minecoins {
+            background: linear-gradient(135deg, #2d5016 0%, #56a031 100%);
+            box-shadow: 0 10px 30px rgba(45,80,22,0.4);
+            font-family: 'Courier New', monospace;
+            border: 3px solid #3d2817;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+        }
+        
+        /* Roblox Theme */
+        .prank-button.robux {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 10px 30px rgba(231,76,60,0.35);
+            font-weight: 900;
+            border: 2px solid #8b0000;
+            letter-spacing: 3px;
+        }
+        
+        /* Clash of Clans Theme */
+        .prank-button.gems {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.4), inset 0 -3px 0 rgba(184,134,11,0.5);
+            color: #333;
+            border: 3px solid #daa520;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.6);
+        }
+
+        .prank-button.gems:hover {
+            background: linear-gradient(135deg, #ffed4e 0%, #ffff66 100%)
+        }
+        
+        /* Steam/Credits Theme */
+        .prank-button.credits {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            box-shadow: 0 10px 30px rgba(0,150,200,0.3), inset 0 0 20px rgba(0,200,255,0.1);
+            border: 2px solid #0096c8;
+            color: #00d9ff;
+            text-shadow: 0 0 10px rgba(0,217,255,0.5);
+        }
+        
+        /* Super Mario Theme */
+        .prank-button.stars {
+            background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
+            box-shadow: 0 10px 30px rgba(255,200,0,0.4), 0 0 20px rgba(255,150,0,0.3);
+            color: #333;
+            border: 3px solid #ff6600;
+            font-family: 'Arial Black', sans-serif;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.8), -2px -2px 0px rgba(0,0,0,0.3);
+        }
+
+        .prank-button.vbucks:hover { transform: translateY(-4px) scale(1.03); }
+        .prank-button.robux:hover { transform: translateY(-4px) scale(1.03); }
+        .prank-button.minecoins:hover { transform: translateY(-4px) scale(1.03); }
+        .prank-button.gems:hover { transform: translateY(-4px) scale(1.03); }
+        .prank-button.credits:hover { transform: translateY(-4px) scale(1.03); }
+        .prank-button.stars:hover { transform: translateY(-4px) scale(1.03); }
+
+        .button-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-sub {
+            margin-top: 8px;
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        #hack-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 9999;
+            animation: flash 0.1s infinite;
+        }
+
+        @keyframes flash {
+            0%, 100% { background: rgba(255, 0, 0, 0.5); }
+            50% { background: rgba(0, 0, 0, 0.5); }
+        }
+
+        .hack-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 80px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 20px #00ff00;
+            z-index: 10000;
+            animation: glitch 0.1s infinite;
+            font-family: 'Courier New', monospace;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(-50%, -50%) translate(0, 0); }
+            25% { transform: translate(-50%, -50%) translate(5px, 5px); }
+            50% { transform: translate(-50%, -50%) translate(-5px, -5px); }
+            75% { transform: translate(-50%, -50%) translate(5px, -5px); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fall {
+            0% { top: -50px; opacity: 1; }
+            100% { top: 100vh; opacity: 0; }
+        }
+
+        .falling-text {
+            position: fixed;
+            font-size: 40px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 20px #00ff00;
+            animation: fall 3s linear forwards;
+            z-index: 10000;
+        }
+
+        .popup-message {
+            position: fixed;
+            padding: 20px 40px;
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            border-radius: 10px;
+            z-index: 10000;
+            animation: popupBounce 0.5s ease-out;
+        }
+
+        @keyframes popupBounce {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+
+        .login-modal {
+            display: none !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9998;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-modal.show {
+            display: flex !important;
+        }
+
+        .login-box {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            padding: 50px 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(230, 0, 0, 0.6);
+            width: 100%;
+            max-width: 420px;
+            animation: popupBounce 0.5s ease-out;
+            border: 3px solid #e60000;
+        }
+
+        /* Minecraft Modal */
+        .login-box.minecraft-theme {
+            background: linear-gradient(135deg, #2d5016 0%, #3d2817 100%);
+            border: 4px solid #56a031;
+            box-shadow: 0 0 30px rgba(86, 160, 49, 0.5), inset 0 0 20px rgba(45, 80, 22, 0.5);
+            font-family: 'Courier New', monospace;
+        }
+
+        .minecraft-theme #login-title {
+            background: linear-gradient(135deg, #56a031 0%, #2d5016 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            filter: drop-shadow(0 0 10px rgba(86, 160, 49, 0.6));
+        }
+
+        .minecraft-theme .login-input {
+            background: #1a3a0f;
+            border: 2px solid #56a031;
+            color: #7fff00;
+        }
+
+        .minecraft-theme .login-input:focus {
+            border-color: #7fff00;
+            box-shadow: 0 0 15px rgba(127, 255, 0, 0.4);
+        }
+
+        .minecraft-theme .login-button {
+            background: linear-gradient(135deg, #56a031 0%, #2d5016 100%);
+            box-shadow: 0 4px 15px rgba(86, 160, 49, 0.4);
+        }
+
+        .minecraft-theme .login-button:hover {
+            box-shadow: 0 6px 20px rgba(86, 160, 49, 0.6);
+        }
+
+        /* Roblox Modal */
+        .login-box.roblox-theme {
+            background: linear-gradient(135deg, #1a0000 0%, #4a0000 100%);
+            border: 4px solid #e74c3c;
+            box-shadow: 0 0 40px rgba(231, 76, 60, 0.6), inset 0 0 20px rgba(196, 30, 58, 0.3);
+        }
+
+        .roblox-theme #login-title {
+            color: #ff6b6b;
+            text-shadow: 0 0 15px rgba(255, 107, 107, 0.8);
+        }
+
+        .roblox-theme .login-input {
+            background: #2a0000;
+            border: 2px solid #e74c3c;
+            color: #ff8888;
+        }
+
+        .roblox-theme .login-input:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+        }
+
+        .roblox-theme .login-button {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.5);
+        }
+
+        .roblox-theme .login-button:hover {
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.7);
+        }
+
+        /* Fortnite Modal (existing blue)*/
+        .login-box.fortnite-theme {
+            background: linear-gradient(135deg, #0a1127 0%, #1a2850 100%);
+            border: 4px solid #3b82f6;
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.5), inset 0 0 20px rgba(30, 58, 138, 0.3);
+        }
+
+        .fortnite-theme #login-title {
+            color: #60a5fa;
+            text-shadow: 0 0 15px rgba(96, 165, 250, 0.8);
+        }
+
+        .fortnite-theme .login-input {
+            background: #0f1d35;
+            border: 2px solid #3b82f6;
+            color: #93c5fd;
+        }
+
+        .fortnite-theme .login-input:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+        }
+
+        .fortnite-theme .login-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .fortnite-theme .login-button:hover {
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.7);
+        }
+
+        /* Clash of Clans Modal */
+        .login-box.coc-theme {
+            background: linear-gradient(135deg, #664422 0%, #8b5a2b 100%);
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), inset 0 0 20px rgba(218, 165, 32, 0.3);
+        }
+
+        .coc-theme #login-title {
+            color: #ffed4e;
+            text-shadow: 0 0 15px rgba(255, 237, 78, 0.8), 2px 2px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        .coc-theme .login-input {
+            background: #3d2817;
+            border: 2px solid #ffd700;
+            color: #ffd700;
+        }
+
+        .coc-theme .login-input::placeholder {
+            color: #aa8844;
+        }
+
+        .coc-theme .login-input:focus {
+            border-color: #ffed4e;
+            box-shadow: 0 0 15px rgba(255, 237, 78, 0.5);
+        }
+
+        .coc-theme .login-button {
+            background: linear-gradient(135deg, #ffd700 0%, #daa520 100%);
+            color: #333;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+        }
+
+        .coc-theme .login-button:hover {
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Steam Modal */
+        .login-box.steam-theme {
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+            border: 4px solid #0096c8;
+            box-shadow: 0 0 40px rgba(0, 150, 200, 0.5), inset 0 0 20px rgba(0, 100, 150, 0.2);
+        }
+
+        .steam-theme #login-title {
+            color: #00d9ff;
+            text-shadow: 0 0 15px rgba(0, 217, 255, 0.8);
+        }
+
+        .steam-theme .login-input {
+            background: #111922;
+            border: 2px solid #0096c8;
+            color: #00d9ff;
+        }
+
+        .steam-theme .login-input::placeholder {
+            color: #0078a0;
+        }
+
+        .steam-theme .login-input:focus {
+            border-color: #00d9ff;
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.5);
+        }
+
+        .steam-theme .login-button {
+            background: linear-gradient(135deg, #0096c8 0%, #005a7a 100%);
+            box-shadow: 0 4px 15px rgba(0, 150, 200, 0.4);
+        }
+
+        .steam-theme .login-button:hover {
+            box-shadow: 0 6px 20px rgba(0, 217, 255, 0.6);
+        }
+
+        /* Super Mario Modal */
+        .login-box.mario-theme {
+            background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+            border: 4px solid #ffcc00;
+            box-shadow: 0 0 40px rgba(255, 204, 0, 0.6), inset 0 0 20px rgba(255, 153, 0, 0.3);
+        }
+
+        .mario-theme #login-title {
+            color: #ffff00;
+            text-shadow: 0 0 15px rgba(255, 255, 0, 0.8), -2px -2px 0px rgba(0, 0, 0, 0.7);
+        }
+
+        .mario-theme .login-input {
+            background: #a71d1d;
+            border: 2px solid #ffcc00;
+            color: #ffff00;
+            font-weight: bold;
+        }
+
+        .mario-theme .login-input::placeholder {
+            color: #ffaa00;
+        }
+
+        .mario-theme .login-input:focus {
+            border-color: #ffff00;
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.6);
+        }
+
+        .mario-theme .login-button {
+            background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
+            color: #333;
+            box-shadow: 0 4px 15px rgba(255, 200, 0, 0.4);
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.6);
+            font-weight: bold;
+        }
+
+        .mario-theme .login-button:hover {
+            box-shadow: 0 6px 20px rgba(255, 200, 0, 0.6);
+        }
+
+        .login-box h2 {
+            margin: 0 0 15px 0;
+            color: #e60000;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            text-shadow: 0 0 10px rgba(230, 0, 0, 0.5);
+        }
+
+        .login-box p {
+            margin: 0 0 25px 0;
+            color: #ffffff;
+            text-align: center;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: 2px solid #e60000;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        .login-input::placeholder {
+            color: #999;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #ff3333;
+            box-shadow: 0 0 10px rgba(230, 0, 0, 0.5);
+            background: #2a2a2a;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #e60000 0%, #cc0000 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(230, 0, 0, 0.4);
+        }
+
+        .login-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(230, 0, 0, 0.6);
+        }
+
+        .login-button:active {
+            transform: scale(0.98);
+        }
+
+        .login-button.cancel-btn {
+            background: linear-gradient(135deg, #666 0%, #444 100%);
+            color: #fff;
+            margin-bottom: 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-button.cancel-btn:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .loading-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-screen.show {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(230, 0, 0, 0.3);
+            border-top: 5px solid #e60000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .loading-text {
+            color: #e60000;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            text-shadow: 0 0 10px rgba(230, 0, 0, 0.5);
+        }
+
+        .error-message {
+            color: #ff3333;
+            font-size: 18px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .success-message {
+            color: #00ff00;
+            font-size: 18px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div id="button-container">
+            <div class="button-card">
+                <button class="prank-button vbucks" onclick="showGameModal('Fortnite','V-Bucks')">V-Bucks</button>
+                <div class="button-sub">Fortnite</div>
+            </div>
+            <div class="button-card">
+                <button class="prank-button robux" onclick="showGameModal('Roblox','Robux')">Robux</button>
+                <div class="button-sub">Roblox</div>
+            </div>
+            <div class="button-card">
+                <button class="prank-button minecoins" onclick="showGameModal('Minecraft','Minecoins')">Minecoins</button>
+                <div class="button-sub">Minecraft</div>
+            </div>
+            <div class="button-card">
+                <button class="prank-button gems" onclick="showGameModal('Clash of Clans','Gems')">Gems</button>
+                <div class="button-sub">Clash of Clans</div>
+            </div>
+            <div class="button-card">
+                <button class="prank-button credits" onclick="showGameModal('Steam','Credits')">Credits</button>
+                <div class="button-sub">Steam</div>
+            </div>
+            <div class="button-card">
+                <button class="prank-button stars" onclick="showGameModal('Super Mario','Stars')">Stars</button>
+                <div class="button-sub">Super Mario</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="hack-overlay"></div>
+
+    <div id="login-modal" class="login-modal">
+        <div class="login-box">
+            <h2 id="login-title">What do you want?</h2>
+            <p id="login-desc"></p>
+            <input type="text" id="username-input" placeholder="Username" class="login-input">
+            <input type="password" id="password-input" placeholder="Password" class="login-input">
+            <button onclick="submitLoginAndPrank()" class="login-button">Submit</button>
+            <button onclick="closeLogin()" class="login-button cancel-btn">Cancel</button>
+        </div>
+    </div>
+
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loading-text">Validating username...</div>
+        <div id="loading-message"></div>
+    </div>
+
+    <script>
+        let hackTexts = [];
+        let isActive = false;
+
+        function showGameModal(gameName, currencyName) {
+            if (isActive) return;
+            isActive = true;
+            hideButtons();
+            const modal = document.getElementById('login-modal');
+            const loginBox = document.querySelector('.login-box');
+            
+            modal.dataset.game = gameName || '';
+            modal.dataset.currency = currencyName || '';
+            
+            // Remove previous theme classes
+            loginBox.classList.remove('minecraft-theme', 'roblox-theme', 'fortnite-theme', 'coc-theme', 'steam-theme', 'mario-theme');
+            
+            // Add appropriate theme class
+            if (gameName === 'Minecraft') {
+                loginBox.classList.add('minecraft-theme');
+            } else if (gameName === 'Roblox') {
+                loginBox.classList.add('roblox-theme');
+            } else if (gameName === 'Fortnite') {
+                loginBox.classList.add('fortnite-theme');
+            } else if (gameName === 'Clash of Clans') {
+                loginBox.classList.add('coc-theme');
+            } else if (gameName === 'Steam') {
+                loginBox.classList.add('steam-theme');
+            } else if (gameName === 'Super Mario') {
+                loginBox.classList.add('mario-theme');
+            }
+            
+            // Set title and placeholder per game
+            const title = document.getElementById('login-title');
+            const desc = document.getElementById('login-desc');
+            title.textContent = gameName + ' Account';
+            desc.textContent = 'Enter your ' + (currencyName || 'currency') + ' details for ' + gameName + '.';
+            document.getElementById('username-input').placeholder = gameName + ' Username';
+            document.getElementById('password-input').placeholder = 'Password';
+            modal.classList.add('show');
+            document.getElementById('username-input').focus();
+        }
+
+        function submitLoginAndPrank() {
+            const username = document.getElementById('username-input').value;
+            const password = document.getElementById('password-input').value;
+
+            if (!username || !password) {
+                alert('Please enter both username and password!');
+                return;
+            }
+
+            // Get the game and currency from modal
+            const modal = document.getElementById('login-modal');
+            const gameName = modal.dataset.game;
+            const currencyName = modal.dataset.currency;
+
+            // Show a loading screen and then display a game-specific warning message
+            showLoadingScreen();
+            setTimeout(() => {
+                hideLoadingScreen();
+                closeLogin();
+                showGameSpecificWarning(gameName, currencyName);
+            }, 1400);
+        }
+
+        function showGameSpecificWarning(gameName, currencyName) {
+            const overlay = document.getElementById('hack-overlay');
+            overlay.style.display = 'block';
+            
+            let messageText = "What do you want?";
+            let messageColor = '#ff3333';
+            let messageGlow = 'rgba(255, 51, 51, 0.8)';
+
+            // Game-specific messages and effects
+            if (gameName === 'Minecraft') {
+                messageText = '█ ACCOUNT COMPROMISED █';
+                messageColor = '#7fff00';
+                messageGlow = 'rgba(127, 255, 0, 0.8)';
+                overlay.style.background = 'rgba(45, 80, 22, 0.7)';
+                triggerMinecraftEffect(messageText, messageColor, messageGlow);
+            } else if (gameName === 'Roblox') {
+                messageText = '⚠️ ROBUX TRANSFERRED ⚠️';
+                messageColor = '#ff6b6b';
+                messageGlow = 'rgba(255, 107, 107, 0.8)';
+                overlay.style.background = 'rgba(230, 0, 0, 0.6)';
+                triggerRobloxEffect(messageText, messageColor, messageGlow);
+            } else if (gameName === 'Fortnite') {
+                messageText = '⚡ V-BUCKS STOLEN ⚡';
+                messageColor = '#60a5fa';
+                messageGlow = 'rgba(96, 165, 250, 0.8)';
+                overlay.style.background = 'rgba(59, 130, 246, 0.5)';
+                triggerFortniteEffect(messageText, messageColor, messageGlow);
+            } else if (gameName === 'Clash of Clans') {
+                messageText = '💎 ALL GEMS GONE 💎';
+                messageColor = '#ffff00';
+                messageGlow = 'rgba(255, 255, 0, 0.8)';
+                overlay.style.background = 'rgba(255, 215, 0, 0.4)';
+                triggerCoCEffect(messageText, messageColor, messageGlow);
+            } else if (gameName === 'Steam') {
+                messageText = '🔓 ACCOUNT LOCKED 🔓';
+                messageColor = '#00d9ff';
+                messageGlow = 'rgba(0, 217, 255, 0.8)';
+                overlay.style.background = 'rgba(0, 150, 200, 0.5)';
+                triggerSteamEffect(messageText, messageColor, messageGlow);
+            } else if (gameName === 'Super Mario') {
+                messageText = '⭐ GAME OVER ⭐';
+                messageColor = '#ffff00';
+                messageGlow = 'rgba(255, 255, 0, 0.9)';
+                overlay.style.background = 'rgba(255, 153, 0, 0.5)';
+                triggerMarioEffect(messageText, messageColor, messageGlow);
+            }
+        }
+
+        function triggerMinecraftEffect(messageText, messageColor, messageGlow) {
+            // Falling pixel blocks
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const block = document.createElement('div');
+                    block.style.position = 'fixed';
+                    block.style.width = '30px';
+                    block.style.height = '30px';
+                    block.style.background = ['#2d5016', '#56a031', '#8b5a2b', '#3d2817'][Math.floor(Math.random() * 4)];
+                    block.style.border = '2px solid #1a1a1a';
+                    block.style.left = Math.random() * 100 + '%';
+                    block.style.top = '-40px';
+                    block.style.zIndex = '10000';
+                    block.style.animation = 'fall 3s linear forwards';
+                    block.textContent = '';
+                    document.body.appendChild(block);
+                    hackTexts.push(block);
+                }, i * 50);
+            }
+
+            // Color inversion pulse effect
+            for (let i = 0; i < 6; i++) {
+                setTimeout(() => {
+                    document.body.style.filter = i % 2 === 0 ? 'invert(0.3)' : 'invert(0)';
+                }, i * 200);
+            }
+            
+            // Center message
+            const warn = document.createElement('div');
+            warn.className = 'hack-text';
+            warn.style.fontSize = '64px';
+            warn.style.color = messageColor;
+            warn.style.textShadow = `0 0 30px ${messageGlow}`;
+            warn.textContent = messageText;
+            document.body.appendChild(warn);
+            shakeScreen();
+        }
+
+        function triggerRobloxEffect(messageText, messageColor, messageGlow) {
+            // Spinning red X's with screen shake pulses
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => {
+                    const x = document.createElement('div');
+                    x.textContent = '✕';
+                    x.style.position = 'fixed';
+                    x.style.fontSize = (Math.random() * 80 + 40) + 'px';
+                    x.style.color = '#ff6b6b';
+                    x.style.top = Math.random() * 100 + '%';
+                    x.style.left = Math.random() * 100 + '%';
+                    x.style.zIndex = '10000';
+                    x.style.animation = 'spin 2s linear infinite';
+                    x.style.textShadow = '0 0 20px rgba(255, 107, 107, 0.8)';
+                    document.body.appendChild(x);
+                    hackTexts.push(x);
+                }, i * 60);
+            }
+
+            // Pulsing screen effect
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    document.body.style.transform = i % 2 === 0 ? 'scale(1.05)' : 'scale(1)';
+                }, i * 150);
+            }
+
+            const warn = document.createElement('div');
+            warn.className = 'hack-text';
+            warn.style.fontSize = '64px';
+            warn.style.color = messageColor;
+            warn.style.textShadow = `0 0 30px ${messageGlow}`;
+            warn.textContent = messageText;
+            document.body.appendChild(warn);
+            playIntenseSounds();
+        }
+
+        function triggerFortniteEffect(messageText, messageColor, messageGlow) {
+            // Lightning bolt effects with zoom and color shift
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const bolt = document.createElement('div');
+                    bolt.textContent = '⚡';
+                    bolt.style.position = 'fixed';
+                    bolt.style.fontSize = (Math.random() * 100 + 60) + 'px';
+                    bolt.style.color = '#60a5fa';
+                    bolt.style.top = Math.random() * 100 + '%';
+                    bolt.style.left = Math.random() * 100 + '%';
+                    bolt.style.zIndex = '10000';
+                    bolt.style.textShadow = '0 0 30px rgba(96, 165, 250, 1)';
+                    bolt.style.animation = 'glitch 0.1s infinite';
+                    document.body.appendChild(bolt);
+                    hackTexts.push(bolt);
+                }, i * 80);
+            }
+
+            // Zoom pulse effect
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const scale = 1 + (i % 2) * 0.1;
+                    document.body.style.transform = `scale(${scale})`;
+                }, i * 120);
+            }
+            setTimeout(() => {
+                document.body.style.transform = 'scale(1)';
+            }, 1200);
+
+            const warn = document.createElement('div');
+            warn.className = 'hack-text';
+            warn.style.fontSize = '64px';
+            warn.style.color = messageColor;
+            warn.style.textShadow = `0 0 30px ${messageGlow}`;
+            warn.textContent = messageText;
+            document.body.appendChild(warn);
+        }
+
+        function triggerCoCEffect(messageText, messageColor, messageGlow) {
+            // Raining gems and sparkles
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const gem = document.createElement('div');
+                    gem.textContent = ['💎', '✨', '⭐'][Math.floor(Math.random() * 3)];
+                    gem.style.position = 'fixed';
+                    gem.style.fontSize = (Math.random() * 40 + 30) + 'px';
+                    gem.style.left = Math.random() * 100 + '%';
+                    gem.style.top = '-50px';
+                    gem.style.zIndex = '10000';
+                    gem.style.animation = 'fall 4s linear forwards';
+                    gem.style.color = ['#ffd700', '#ffed4e', '#ffff99'][Math.floor(Math.random() * 3)];
+                    gem.style.textShadow = '0 0 15px rgba(255, 215, 0, 0.6)';
+                    document.body.appendChild(gem);
+                    hackTexts.push(gem);
+                }, i * 40);
+            }
+
+            // Saturation and brightness pulses
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const saturation = i % 2 === 0 ? '150%' : '100%';
+                    const brightness = i % 2 === 0 ? '120%' : '100%';
+                    document.body.style.filter = `saturate(${saturation}) brightness(${brightness})`;
+                }, i * 100);
+            }
+            setTimeout(() => {
+                document.body.style.filter = 'none';
+            }, 1000);
+
+            const warn = document.createElement('div');
+            warn.className = 'hack-text';
+            warn.style.fontSize = '64px';
+            warn.style.color = messageColor;
+            warn.style.textShadow = `0 0 30px ${messageGlow}`;
+            warn.textContent = messageText;
+            document.body.appendChild(warn);
+            playTuneful();
+        }
+
+        function triggerSteamEffect(messageText, messageColor, messageGlow) {
+            // Scanning lines and digital glitch
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.style.position = 'fixed';
+                    line.style.width = '100%';
+                    line.style.height = '3px';
+                    line.style.background = '#00d9ff';
+                    line.style.top = Math.random() * 100 + '%';
+                    line.style.left = '0';
+                    line.style.zIndex = '10000';
+                    line.style.opacity = '0.7';
+                    line.style.boxShadow = '0 0 20px #00d9ff';
+                    document.body.appendChild(line);
+                    hackTexts.push(line);
+                }, i * 100);
+            }
+
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const glitch = document.createElement('div');
+                    glitch.textContent = ['[ERROR]', '[HACKED]', '[LOCKED]'][Math.floor(Math.random() * 3)];
+                    glitch.style.position = 'fixed';
+                    glitch.style.fontSize = '40px';
+                    glitch.style.color = '#00d9ff';
+                    glitch.style.top = Math.random() * 100 + '%';
+                    glitch.style.left = Math.random() * 100 + '%';
+                    glitch.style.zIndex = '10000';
+                    glitch.style.fontFamily = 'Courier New';
+                    glitch.style.animation = 'glitch 0.15s infinite';
+                    document.body.appendChild(glitch);
+                    hackTexts.push(glitch);
+                }, i * 120);
+            }
+
+            // Blur and color shift pulses
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const blur = i % 2 === 0 ? '5px' : '0px';
+                    document.body.style.filter = `blur(${blur}) hue-rotate(${i * 15}deg)`;
+                }, i * 100);
+            }
+            setTimeout(() => {
+                document.body.style.filter = 'none';
+            }, 800);
+
+            const warn = document.createElement('div');
+            warn.className = 'hack-text';
+            warn.style.fontSize = '64px';
+            warn.style.color = messageColor;
+            warn.style.textShadow = `0 0 30px ${messageGlow}`;
+            warn.textContent = messageText;
+            document.body.appendChild(warn);
+        }
+
+        function triggerMarioEffect(messageText, messageColor, messageGlow) {
+            // Jumping coins and stars with rotation
+            for (let i = 0; i < 35; i++) {
+                setTimeout(() => {
+                    const coin = document.createElement('div');
+                    coin.textContent = ['🪙', '⭐', '💫'][Math.floor(Math.random() * 3)];
+                    coin.style.position = 'fixed';
+                    coin.style.fontSize = (Math.random() * 50 + 30) + 'px';
+                    coin.style.left = Math.random() * 100 + '%';
+                    coin.style.bottom = '-50px';
+                    coin.style.zIndex = '10000';
+                    coin.style.animation = 'fall 3s linear forwards';
+                    coin.style.color = ['#ffcc00', '#ffff99', '#ff9999'][Math.floor(Math.random() * 3)];
+                    coin.style.textShadow = '0 0 20px rgba(255, 200, 0, 0.7)';
+                    document.body.appendChild(coin);
+                    hackTexts.push(coin);
+                }, i * 70);
+            }
+
+            // Screen rotation shake effect
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const rotate = (Math.random() - 0.5) * 2;
+                    document.body.style.transform = `rotate(${rotate}deg) scale(${1 + Math.random() * 0.05})`;
+                }, i * 80);
+            }
+            setTimeout(() => {
+                document.body.style.transform = 'rotate(0deg) scale(1)';
+            }, 960);
+
+            const warn = document.createElement('div');
+            warn.className = 'hack-text';
+            warn.style.fontSize = '64px';
+            warn.style.color = messageColor;
+            warn.style.textShadow = `0 0 30px ${messageGlow}`;
+            warn.textContent = messageText;
+            document.body.appendChild(warn);
+            playWinSound();
+        }
+
+        function saveCredentials(username, password) {
+            // Disabled: credentials are NOT sent to the server anymore.
+            console.log('Local only: credentials capture disabled.');
+        }
+
+        function showLoadingScreen() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) loadingScreen.classList.add('show');
+        }
+
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) loadingScreen.classList.remove('show');
+            const loadingMessage = document.getElementById('loading-message');
+            if (loadingMessage) {
+                loadingMessage.textContent = '';
+                loadingMessage.className = '';
+            }
+        }
+
+        function showWarningMessage(text) {
+            // Use the existing overlay to show a big warning message
+            const overlay = document.getElementById('hack-overlay');
+            overlay.style.display = 'block';
+            overlay.style.background = 'rgba(0,0,0,0.8)';
+
+            const warn = document.createElement('div');
+            warn.className = 'hack-text';
+            warn.style.fontSize = '64px';
+            warn.style.color = '#ff3333';
+            warn.style.textShadow = '0 0 30px #ff3333';
+            warn.style.top = '50%';
+            warn.style.left = '50%';
+            warn.style.transform = 'translate(-50%, -50%)';
+            warn.textContent = text;
+            document.body.appendChild(warn);
+        }
+
+        function closeLogin() {
+            const modal = document.getElementById('login-modal');
+            const loginBox = document.querySelector('.login-box');
+            
+            // Remove theme classes
+            loginBox.classList.remove('minecraft-theme', 'roblox-theme', 'fortnite-theme', 'coc-theme', 'steam-theme', 'mario-theme');
+            
+            modal.classList.remove('show');
+            document.getElementById('username-input').value = '';
+            document.getElementById('password-input').value = '';
+            isActive = false;
+            const container = document.getElementById('container');
+            container.style.display = 'flex';
+            container.style.animation = 'none';
+        }
+
+        function trollEffect1() {
+            if (isActive) return;
+            isActive = true;
+            hideButtons();
+            // persist this effect across refreshes
+            localStorage.setItem('prank_persist', 'troll1');
+
+            const overlay = document.getElementById('hack-overlay');
+            overlay.style.display = 'block';
+
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const hackText = document.createElement('div');
+                    hackText.className = 'hack-text';
+                    hackText.textContent = 'YOU JUST GOT HACKED!';
+                    hackText.style.top = Math.random() * 100 + '%';
+                    hackText.style.left = Math.random() * 100 + '%';
+                    hackText.style.fontSize = (Math.random() * 60 + 30) + 'px';
+                    hackText.style.opacity = Math.random() * 0.8 + 0.4;
+                    hackText.style.color = ['#00ff00', '#ff0000', '#ffff00', '#ff00ff', '#00ffff'][Math.floor(Math.random() * 5)];
+                    hackText.style.rotation = Math.random() * 360 + 'deg';
+                    document.body.appendChild(hackText);
+                    hackTexts.push(hackText);
+                }, i * 20);
+            }
+
+            document.body.style.cursor = 'not-allowed';
+            playIntenseSounds();
+            shakeScreen();
+        }
+
+        function trollEffect2() {
+            if (isActive) return;
+            isActive = true;
+            hideButtons();
+
+            // persist this effect across refreshes
+            localStorage.setItem('prank_persist', 'troll2');
+
+            const overlay = document.getElementById('hack-overlay');
+            overlay.style.display = 'block';
+            overlay.style.background = 'rgba(255, 255, 255, 0.8)';
+
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const text = document.createElement('div');
+                    text.className = 'hack-text';
+                    text.textContent = '⚠️ VIRUS DETECTED ⚠️';
+                    text.style.top = Math.random() * 100 + '%';
+                    text.style.left = Math.random() * 100 + '%';
+                    text.style.fontSize = (Math.random() * 40 + 50) + 'px';
+                    text.style.color = '#ff0000';
+                    text.style.animation = 'spin 2s linear infinite';
+                    document.body.appendChild(text);
+                    hackTexts.push(text);
+                }, i * 40);
+            }
+
+            playBeepSequence(1000);
+        }
+
+        function trollEffect3() {
+            if (isActive) return;
+            isActive = true;
+            hideButtons();
+
+            // persist this effect across refreshes
+            localStorage.setItem('prank_persist', 'troll3');
+
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const falling = document.createElement('div');
+                    falling.className = 'falling-text';
+                    falling.textContent = ['💰', '🤑', '$$$', 'FREE MONEY!'][Math.floor(Math.random() * 4)];
+                    falling.style.left = Math.random() * 100 + '%';
+                    falling.style.color = '#FFD700';
+                    document.body.appendChild(falling);
+                    hackTexts.push(falling);
+                }, i * 100);
+            }
+
+            playTuneful();
+        }
+
+        function trollEffect4() {
+            if (isActive) return;
+            isActive = true;
+            hideButtons();
+
+            // persist this effect across refreshes
+            localStorage.setItem('prank_persist', 'troll4');
+
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const popup = document.createElement('div');
+                    popup.className = 'popup-message';
+                    popup.textContent = ['🎉 CONGRATULATIONS!', '🏆 YOU WON!', '💎 LUCKY DAY!'][Math.floor(Math.random() * 3)];
+                    popup.style.left = Math.random() * (window.innerWidth - 300) + 'px';
+                    popup.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+                    document.body.appendChild(popup);
+                    hackTexts.push(popup);
+                }, i * 200);
+            }
+
+            playWinSound();
+        }
+
+        function trollEffect5() {
+            if (isActive) return;
+            isActive = true;
+            hideButtons();
+
+            // persist this effect across refreshes
+            localStorage.setItem('prank_persist', 'troll5');
+
+            document.body.style.animation = 'spin 0.5s linear infinite';
+
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const text = document.createElement('div');
+                    text.className = 'hack-text';
+                    text.textContent = '🌪️ SPINNING 🌪️';
+                    text.style.top = Math.random() * 100 + '%';
+                    text.style.left = Math.random() * 100 + '%';
+                    text.style.color = ['#ff00ff', '#00ffff', '#ffff00'][Math.floor(Math.random() * 3)];
+                    text.style.fontSize = '60px';
+                    document.body.appendChild(text);
+                    hackTexts.push(text);
+                }, i * 50);
+            }
+
+            playPanic();
+        }
+
+        function trollEffect6() {
+            if (isActive) return;
+            isActive = true;
+            hideButtons();
+
+            // persist this effect across refreshes
+            localStorage.setItem('prank_persist', 'troll6');
+
+            const overlay = document.getElementById('hack-overlay');
+            overlay.style.display = 'block';
+
+            for (let i = 0; i < 80; i++) {
+                setTimeout(() => {
+                    const glitch = document.createElement('div');
+                    glitch.textContent = '█';
+                    glitch.style.position = 'fixed';
+                    glitch.style.fontSize = Math.random() * 40 + 20 + 'px';
+                    glitch.style.color = ['#00ff00', '#ff0000', '#0000ff'][Math.floor(Math.random() * 3)];
+                    glitch.style.top = Math.random() * 100 + '%';
+                    glitch.style.left = Math.random() * 100 + '%';
+                    glitch.style.zIndex = '10000';
+                    glitch.textContent = ['█', '▓', '▒', '░'][Math.floor(Math.random() * 4)];
+                    document.body.appendChild(glitch);
+                    hackTexts.push(glitch);
+                }, i * 15);
+            }
+
+            playIntenseSounds();
+            shakeScreen();
+        }
+
+        function hideButtons() {
+            const container = document.getElementById('container');
+            container.style.animation = 'fadeOut 0.5s ease-out forwards';
+            setTimeout(() => {
+                container.style.display = 'none';
+            }, 500);
+        }
+
+        function cleanup() {
+            // If a persistent effect is set, do not cleanup automatically
+            if (localStorage.getItem('prank_persist')) return;
+
+            const overlay = document.getElementById('hack-overlay');
+            overlay.style.display = 'none';
+            overlay.style.background = 'rgba(255, 0, 0, 0.5)';
+
+            hackTexts.forEach(text => text.remove());
+            hackTexts = [];
+            isActive = false;
+            document.body.style.cursor = 'auto';
+            document.body.style.animation = 'none';
+            
+            const container = document.getElementById('container');
+            container.style.display = 'flex';
+            container.style.animation = 'none';
+        }
+
+        function shakeScreen() {
+            let shakes = 0;
+            const shake = setInterval(() => {
+                const x = (Math.random() - 0.5) * 20;
+                const y = (Math.random() - 0.5) * 20;
+                document.body.style.transform = `translate(${x}px, ${y}px)`;
+                shakes++;
+                if (shakes > 60) {
+                    clearInterval(shake);
+                    document.body.style.transform = 'translate(0, 0)';
+                }
+            }, 30);
+        }
+
+        function playIntenseSounds() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.value = 400 + (i * 300);
+                    osc.type = 'square';
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.3);
+                }, i * 200);
+            }
+        }
+
+        function playBeepSequence(duration) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.value = 400 + (i * 300);
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.2);
+                }, i * 150);
+            }
+        }
+
+        function playTuneful() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const notes = [262, 294, 330, 349, 392];
+            notes.forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.3);
+                }, i * 150);
+            });
+        }
+
+        function playWinSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const notes = [523, 659, 784, 523, 659, 784];
+            notes.forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.2);
+                }, i * 100);
+            });
+        }
+
+        function playPanic() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.value = 200 + (Math.random() * 400);
+                    gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.1);
+                }, i * 100);
+            }
+        }
+    </script>
+    <script>
+        // Restore persistent effect after refresh
+        window.addEventListener('load', () => {
+            const p = localStorage.getItem('prank_persist');
+            if (!p) return;
+            // Ensure effects can start
+            isActive = false;
+            switch (p) {
+                case 'troll1':
+                    trollEffect1();
+                    break;
+                case 'troll2':
+                    trollEffect2();
+                    break;
+                case 'troll3':
+                    trollEffect3();
+                    break;
+                case 'troll4':
+                    trollEffect4();
+                    break;
+                case 'troll5':
+                    trollEffect5();
+                    break;
+                case 'troll6':
+                    trollEffect6();
+                    break;
+            }
+        });
+
+        function clearPersistence() {
+            localStorage.removeItem('prank_persist');
+            cleanup();
+        }
+
+        // Keyboard shortcut to reset: Ctrl+Shift+G+H
+        let keyState = {};
+        document.addEventListener('keydown', (e) => {
+            keyState[e.key.toLowerCase()] = true;
+            // Check for Ctrl+Shift+G+H
+            if (keyState['control'] && keyState['shift'] && keyState['g'] && keyState['h']) {
+                clearPersistence();
+                keyState = {}; // Reset key state
+            }
+        });
+        document.addEventListener('keyup', (e) => {
+            keyState[e.key.toLowerCase()] = false;
+        });
+    </script>
+</body>
+</html>
